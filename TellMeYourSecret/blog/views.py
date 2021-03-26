@@ -12,12 +12,12 @@ class HomeListView(ListView):
     template_name = 'blog/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 1
+    paginate_by = 10
 
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
-    template_name = 'blog/create_post.html'
+    template_name = 'blog/post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -26,7 +26,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
-    template_name = 'blog/create_post.html'
+    template_name = 'blog/post_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -40,7 +40,7 @@ class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/delete_post_confirm.html'
+    template_name = 'blog/post_confirm_delete.html'
     success_url = '/'
 
     def test_func(self):
@@ -51,13 +51,13 @@ class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class DetailPostView(DetailView):
     model = Post
-    template_name = 'blog/detail_post.html'
+    template_name = 'blog/post_detail.html'
 
 class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         user = get_object_or_404(User,username=self.kwargs.get('username'))

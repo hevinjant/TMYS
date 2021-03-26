@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'eomb5+h530u)q&u-z7hcx-@!&k&+9c%q#p!yhmalj99g9*#c0g'
+SECRET_KEY = os.environ.get("TMYS_SECRET_KEY2")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ.get("TMYS_DEBUG_VALUE") == "True")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tmys2021.herokuapp.com']
 
 
 # Application definition
@@ -122,7 +123,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+# Heroku Settings
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+#
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
@@ -133,11 +136,16 @@ LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
 
 # AWS Settings
-# AWS_ACCESS_KEY_ID = os.environ.get('TMYS_AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.environ.get('TMYS_AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('TMYS_AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('TMYS_AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('TMYS_AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = "django-tmys-files"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 #
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None
+
+# PostgreSQL Settings
+django_heroku.settings(locals())
 #
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
