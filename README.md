@@ -1,6 +1,6 @@
-Description:
+Description:  
 Blog-posting web application using Django framework.
 
-Visit:
+Visit:  
 http://tmys2021.herokuapp.com/
 
